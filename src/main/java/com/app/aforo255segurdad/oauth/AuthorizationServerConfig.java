@@ -40,8 +40,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		.tokenStore(tokenStore())
 		.accessTokenConverter(accessTokenConverter());
 	}
-
-	private JwtAccessTokenConverter accessTokenConverter() {
+	@Bean
+	public JwtAccessTokenConverter accessTokenConverter() {
 		JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
 		accessTokenConverter.setSigningKey("aforo255");
 		return accessTokenConverter;

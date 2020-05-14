@@ -7,6 +7,7 @@ import org.apache.tomcat.jni.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 import com.app.aforo255segurdad.dao.UsuarioDao;
 import com.app.aforo255segurdad.models.entity.Usuario;
 
+//import brave.Tracer;
+import zipkin2.internal.Trace;
+
 
 @Service
 public class UsuarioService implements UserDetailsService {
@@ -26,11 +30,15 @@ public class UsuarioService implements UserDetailsService {
 	@Autowired
 	private UsuarioDao client;
 	
+//	@Autowired
+//	private Tracer tracer;
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		Usuario usuario = client.findByUsername(username);
 		if (usuario == null) {
+			//tracer.currentSpan().tag("error.message", "Error login");
 			throw new UsernameNotFoundException("Error Login");
 		}
 		List<GrantedAuthority> authorities = usuario.getRoles().stream()
